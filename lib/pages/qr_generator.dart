@@ -1,5 +1,4 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:qr_image_generator/qr_image_generator.dart';
@@ -34,12 +33,13 @@ class _QRGeneratorScreenState extends State<QRGeneratorScreen> {
   }
 
   Future saveQrImage(String data, String path) async {
-    if (path == '' || data == '') {
-      return;
-    }
+  if (path == '' || data == '') {
+    return;
+  }
 
-    final generator = QRGenerator();
+  final generator = QRGenerator();
 
+  try {
     await generator.generate(
       data: data,
       filePath: path,
@@ -49,8 +49,28 @@ class _QRGeneratorScreenState extends State<QRGeneratorScreen> {
       backgroundColor: Colors.white,
       errorCorrectionLevel: ErrorCorrectionLevel.medium,
     );
-    isGenerated = true;
+    setState(() {
+      isGenerated = true;
+    });
+    showDialog(
+      context: context,
+      builder: ((context) {
+        return const AlertDialog(
+          content: Text("Successful"),
+        );
+      }),
+    );
+  } catch (e) {
+    showDialog(
+      context: context,
+      builder: ((context) {
+        return const AlertDialog(
+          content: Text("Error"),
+        );
+      }),
+    );
   }
+}
 
   @override
   void dispose() {
@@ -107,9 +127,7 @@ class _QRGeneratorScreenState extends State<QRGeneratorScreen> {
               onPressed: () async {
                 await saveQrImage(
                     informationController.text, fullPath);
-                showDialog(context: context, builder: ((context) {
-                    return const AlertDialog(content: Text("Successful"));
-                }));
+                
               },
               child: const Text("Generate",
               style: TextStyle(fontSize: 16),

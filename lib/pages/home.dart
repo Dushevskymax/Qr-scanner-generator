@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               ElevatedButton(
                 style: ButtonStyle(
-                  minimumSize: MaterialStateProperty.all(Size(200, 50))
+                  minimumSize: MaterialStateProperty.all(const Size(200, 50))
                 ),
                 onPressed: () {
                   Navigator.pushNamed(context, '/scanner');
